@@ -15,14 +15,16 @@ class InputTracker:
     def __init__(self, output_file="input_data.json"):
         self.start_time = time.time()
         self.data = {}
+
         self.dragging = {}
-        self.output_file = output_file
+    
         self.running = True
         self.lock = threading.Lock()
         self.old_mouse_pos = {"x": 0, "y": 0}
         self.new_mouse_pos = {"x": 0, "y": 0}
-        self.buffer = ""  # Buffer to store typed characters
         self.mult_keys = set()
+
+        self.exit_count = 0
         
         # Drag mouse
         self.is_dragging = False
@@ -67,47 +69,40 @@ class InputTracker:
         logger.info("InputTracker initialized successfully")
     
     def get_time_interval(self):
-        """Get the current time interval in 10ms intervals since start"""
         return str(int((time.time() - self.start_time) * 100))
+
     
     def on_key_press(self, key):
         char = None
         try:
             char = key.char
-            self.buffer += char
-            
             # Exit out the program by typing: ///
-            if self.buffer.endswith("///"):
-                logger.info("Ending recording. Saving data...")
+            if self.exit_count == 2:
+                print("Ending recording. Saving data...")
                 self.stop()
                 return False  # Stop listener
+
+            if char == "/":
+                self.exit_count += 1
+
+            with self.lock:
+                time_interval = self.get_time_interval()
+                self.data[time_interval] = {
+                    "type": "keypress",
+                    "k": char, # the key pressed
+                    "mults_keys": list(self.mult_keys)  # Convert set to list for JSON serialization
+                }
             
-            # Reset buffer if it gets too long
-            if len(self.buffer) > 10:
-                self.buffer = self.buffer[-10:]
-            
-            logger.debug(f"Key press: '{char}'")
-                
+            print(f"Key press: '{char}'")    
+    
         except AttributeError:
             char = str(key)
-            logger.debug(f"Special key press: {char}")
-        
-        with self.lock:
-            time_interval = self.get_time_interval()
-            self.data[time_interval] = {
-                "x": False, # current X mous pos / set to False because this is a keyboard event
-                "y": False, # current Y mouse pos / set to False because this is a keyboard event
-                "k": char, # the key pressed
-                "c": False, # click
-                "down": False, #click down
-                "up": False, # click release
-                "mults_keys": list(self.mult_keys)  # Convert set to list for JSON serialization
-            }
+            key_name = char.replace("Key.", "") if char.startswith("Key.") else char
+            print(key_name)
+            if key_name in ["shift", "ctrl", "alt"]:
+                print("adding to mult keys")
+                self.mult_keys.add(key_name)
 
-            self.mult_keys.add(char)
-
-            self.event_counters["key_presses"] += 1
-            
         return True
     
     def on_key_release(self, key):
@@ -384,46 +379,13 @@ class InputTracker:
     def save_data(self):
         """Save data to JSON file"""
         with self.lock:
-            # Check for various events before saving
-            down_events = sum(1 for v in self.data.values() if v.get('down') is True)
-            up_events = sum(1 for v in self.data.values() if v.get('up') is True)
-            drag_starts = sum(1 for v in self.data.values() if v.get('drag_start') is True)
-            drag_ends = sum(1 for v in self.data.values() if v.get('drag_end') is True)
-            drag_movements = sum(1 for v in self.data.values() if v.get('during_drag') is True)
-            
-            # Calculate average drag distance and duration
-            drag_distances = [v.get('drag_distance', 0) for v in self.data.values() if v.get('drag_end') is True]
-            drag_durations = [v.get('drag_duration', 0) for v in self.data.values() if v.get('drag_end') is True]
-            
-            avg_drag_distance = sum(drag_distances) / len(drag_distances) if drag_distances else 0
-            avg_drag_duration = sum(drag_durations) / len(drag_durations) if drag_durations else 0
-            
-            logger.info("=== Saving Data ===")
-            logger.info(f"Statistics:")
-            logger.info(f"- Total events: {len(self.data)}")
-            logger.info(f"- Mouse down events: {down_events}")
-            logger.info(f"- Mouse up events: {up_events}")
-            logger.info(f"- Key presses: {self.event_counters['key_presses']}")
-            logger.info(f"- Mouse moves: {self.event_counters['mouse_moves']}")
-            logger.info(f"- Scrolls: {self.event_counters['scrolls']}")
-            logger.info(f"- Drag operations: {self.event_counters['drags']}")
-            logger.info(f"- Drag starts logged: {drag_starts}")
-            logger.info(f"- Drag ends logged: {drag_ends}")
-            logger.info(f"- Drag movements tracked: {drag_movements}")
-            logger.info(f"- Total drag distance: {self.event_counters['drag_distance_total']:.2f} pixels")
-            
-            if self.event_counters['drags'] > 0:
-                logger.info(f"- Average drag distance: {avg_drag_distance:.2f} pixels")
-                logger.info(f"- Average drag duration: {avg_drag_duration:.2f} seconds")
-            
             try:
                 # Also save to the default filename
-                with open(self.output_file, 'w') as f:
+                with open("input_data.json", 'w') as f:
                     json.dump(self.data, f, indent=2)
-                logger.info(f"Data also saved to {os.path.abspath(self.output_file)}")
+                print("Saved data")
             except Exception as e:
                 logger.error(f"Error saving data: {e}")
-
 
 if __name__ == "__main__":
     try:
