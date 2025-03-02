@@ -39,11 +39,7 @@ def main():
             continue
 
         task = data[t]
-        
-        # Log significant events
-        if task.get("down") == True or task.get("up") == True or task.get("c") == True:
-            print(f"Time {t}: Mouse event - down:{task.get('down')}, up:{task.get('up')}, c:{task.get('c')}")
-         
+                 
         # Handle mouse movement
         if task["x"] != False:
             if task["x"] == 0 and task["y"] == 0:
