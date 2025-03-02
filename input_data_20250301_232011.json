@@ -1,0 +1,476 @@
+{
+  "631": {
+    "x": 1952,
+    "y": 1166,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "641": {
+    "x": 1964,
+    "y": 793,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "651": {
+    "x": 1958,
+    "y": 735,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "659": {
+    "x": 1958,
+    "y": 735,
+    "k": false,
+    "c": true,
+    "down": true,
+    "up": false,
+    "drag_start": true
+  },
+  "668": {
+    "x": 1958,
+    "y": 735,
+    "k": false,
+    "c": true,
+    "down": false,
+    "up": true,
+    "drag_end": true,
+    "drag_distance": 0.0,
+    "drag_duration": 0.0885775089263916,
+    "drag_start_x": 1958,
+    "drag_start_y": 735
+  },
+  "674": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "684": {
+    "x": false,
+    "y": false,
+    "k": "a",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "694": {
+    "x": false,
+    "y": false,
+    "k": "a",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_up": true,
+    "press_duration": 0.10314321517944336
+  },
+  "702": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": true,
+    "hold_duration": 0.28220438957214355
+  },
+  "722": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_up": true,
+    "press_duration": 0.4797079563140869
+  },
+  "731": {
+    "x": 1953,
+    "y": 748,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "741": {
+    "x": 1950,
+    "y": 761,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "751": {
+    "x": 1949,
+    "y": 769,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "753": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "771": {
+    "x": false,
+    "y": false,
+    "k": "z",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "782": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": true,
+    "hold_duration": 0.2919893264770508
+  },
+  "819": {
+    "x": false,
+    "y": false,
+    "k": "z",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "830": {
+    "x": false,
+    "y": false,
+    "k": "z",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_up": true,
+    "press_duration": 0.11125731468200684
+  },
+  "851": {
+    "x": 1948,
+    "y": 771,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "854": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_up": true,
+    "press_duration": 1.0149657726287842
+  },
+  "861": {
+    "x": 1934,
+    "y": 807,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "901": {
+    "x": 1965,
+    "y": 804,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "903": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "911": {
+    "x": 1978,
+    "y": 802,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "916": {
+    "x": false,
+    "y": false,
+    "k": "z",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "921": {
+    "x": 1987,
+    "y": 802,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "931": {
+    "x": 1987,
+    "y": 801,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "933": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": true,
+    "hold_duration": 0.2928128242492676
+  },
+  "934": {
+    "x": false,
+    "y": false,
+    "k": "z",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_up": true,
+    "press_duration": 0.18367266654968262
+  },
+  "965": {
+    "x": false,
+    "y": false,
+    "k": "z",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "981": {
+    "x": false,
+    "y": false,
+    "k": "z",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_up": true,
+    "press_duration": 0.15963006019592285
+  },
+  "998": {
+    "x": false,
+    "y": false,
+    "k": "z",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "1010": {
+    "x": false,
+    "y": false,
+    "k": "z",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_up": true,
+    "press_duration": 0.11983394622802734
+  },
+  "1011": {
+    "x": 1986,
+    "y": 811,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1027": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_up": true,
+    "press_duration": 1.231795072555542
+  },
+  "1042": {
+    "x": 1926,
+    "y": 792,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1052": {
+    "x": 1800,
+    "y": 832,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1054": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "1062": {
+    "x": 1773,
+    "y": 863,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1072": {
+    "x": 1731,
+    "y": 1015,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1082": {
+    "x": 1639,
+    "y": 1368,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1083": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": true,
+    "hold_duration": 0.2936999797821045
+  },
+  "1092": {
+    "x": 1656,
+    "y": 1436,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1099": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_up": true,
+    "press_duration": 0.4553368091583252
+  },
+  "1102": {
+    "x": 1833,
+    "y": 1276,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1112": {
+    "x": 1943,
+    "y": 1288,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1122": {
+    "x": 2020,
+    "y": 1322,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1132": {
+    "x": 2054,
+    "y": 1291,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1135": {
+    "x": 2055,
+    "y": 1291,
+    "k": false,
+    "c": true,
+    "down": true,
+    "up": false,
+    "drag_start": true
+  },
+  "1142": {
+    "x": 2055,
+    "y": 1291,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "1145": {
+    "x": 2055,
+    "y": 1291,
+    "k": false,
+    "c": true,
+    "down": false,
+    "up": true,
+    "drag_end": true,
+    "drag_distance": 0.0,
+    "drag_duration": 0.09766840934753418,
+    "drag_start_x": 2055,
+    "drag_start_y": 1291
+  },
+  "1169": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "1179": {
+    "x": false,
+    "y": false,
+    "k": "c",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  }
+}

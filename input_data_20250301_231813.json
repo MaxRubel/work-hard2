@@ -1,91 +1,99 @@
 {
   "50": {
-    "x": 1911,
-    "y": 1275,
+    "x": 2123,
+    "y": 1330,
     "k": false,
     "c": false,
     "up": false,
     "down": false
   },
   "60": {
-    "x": 1482,
-    "y": 1127,
+    "x": 1811,
+    "y": 999,
     "k": false,
     "c": false,
     "up": false,
     "down": false
   },
   "70": {
-    "x": 1087,
-    "y": 762,
+    "x": 1376,
+    "y": 541,
     "k": false,
     "c": false,
     "up": false,
     "down": false
   },
   "80": {
-    "x": 760,
-    "y": 342,
+    "x": 1083,
+    "y": 233,
     "k": false,
     "c": false,
     "up": false,
     "down": false
   },
   "90": {
-    "x": 681,
-    "y": 253,
-    "k": false,
-    "c": false,
-    "up": false,
-    "down": false
-  },
-  "100": {
-    "x": 687,
-    "y": 158,
+    "x": 1030,
+    "y": 201,
     "k": false,
     "c": false,
     "up": false,
     "down": false
   },
   "110": {
-    "x": 682,
-    "y": 140,
+    "x": 998,
+    "y": 172,
     "k": false,
     "c": false,
     "up": false,
     "down": false
   },
-  "113": {
-    "x": 682,
-    "y": 139,
+  "120": {
+    "x": 905,
+    "y": 124,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "130": {
+    "x": 903,
+    "y": 119,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "140": {
+    "x": 908,
+    "y": 105,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "146": {
+    "x": 908,
+    "y": 105,
     "k": false,
     "c": true,
     "down": true,
     "up": false,
     "drag_start": true
   },
-  "120": {
-    "x": 682,
-    "y": 139,
-    "k": false,
-    "c": false,
-    "up": false,
-    "down": false
-  },
-  "121": {
-    "x": 682,
-    "y": 139,
+  "157": {
+    "x": 908,
+    "y": 105,
     "k": false,
     "c": true,
     "down": false,
     "up": true,
     "drag_end": true,
     "drag_distance": 0.0,
-    "drag_duration": 0.07970857620239258,
-    "drag_start_x": 682,
-    "drag_start_y": 139
+    "drag_duration": 0.10402917861938477,
+    "drag_start_x": 908,
+    "drag_start_y": 105
   },
-  "141": {
+  "179": {
     "x": false,
     "y": false,
     "k": "a",
@@ -93,7 +101,7 @@
     "down": false,
     "up": false
   },
-  "160": {
+  "195": {
     "x": false,
     "y": false,
     "k": "a",
@@ -101,7 +109,23 @@
     "down": false,
     "up": false
   },
-  "180": {
+  "200": {
+    "x": 910,
+    "y": 106,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "210": {
+    "x": 911,
+    "y": 106,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "211": {
     "x": false,
     "y": false,
     "k": "a",
@@ -109,7 +133,7 @@
     "down": false,
     "up": false
   },
-  "199": {
+  "229": {
     "x": false,
     "y": false,
     "k": "a",
@@ -117,7 +141,7 @@
     "down": false,
     "up": false
   },
-  "217": {
+  "247": {
     "x": false,
     "y": false,
     "k": "a",
@@ -125,7 +149,7 @@
     "down": false,
     "up": false
   },
-  "237": {
+  "264": {
     "x": false,
     "y": false,
     "k": "a",
@@ -133,7 +157,7 @@
     "down": false,
     "up": false
   },
-  "253": {
+  "282": {
     "x": false,
     "y": false,
     "k": "a",
@@ -141,7 +165,15 @@
     "down": false,
     "up": false
   },
-  "318": {
+  "300": {
+    "x": 911,
+    "y": 107,
+    "k": false,
+    "c": false,
+    "up": false,
+    "down": false
+  },
+  "311": {
     "x": false,
     "y": false,
     "k": "Key.ctrl",
@@ -149,7 +181,7 @@
     "down": false,
     "up": false
   },
-  "329": {
+  "331": {
     "x": false,
     "y": false,
     "k": "a",
@@ -157,7 +189,7 @@
     "down": false,
     "up": false
   },
-  "380": {
+  "381": {
     "x": false,
     "y": false,
     "k": "Key.delete",
@@ -165,31 +197,7 @@
     "down": false,
     "up": false
   },
-  "470": {
-    "x": 732,
-    "y": 211,
-    "k": false,
-    "c": false,
-    "up": false,
-    "down": false
-  },
-  "480": {
-    "x": 751,
-    "y": 232,
-    "k": false,
-    "c": false,
-    "up": false,
-    "down": false
-  },
-  "551": {
-    "x": false,
-    "y": false,
-    "k": "Key.shift_r",
-    "c": false,
-    "down": false,
-    "up": false
-  },
-  "600": {
+  "570": {
     "x": false,
     "y": false,
     "k": "/",
@@ -197,7 +205,7 @@
     "down": false,
     "up": false
   },
-  "616": {
+  "584": {
     "x": false,
     "y": false,
     "k": "/",

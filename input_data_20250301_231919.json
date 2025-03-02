@@ -1,0 +1,20 @@
+{
+  "791": {
+    "x": false,
+    "y": false,
+    "k": "Key.ctrl",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  },
+  "796": {
+    "x": false,
+    "y": false,
+    "k": "c",
+    "c": false,
+    "down": false,
+    "up": false,
+    "key_held": false
+  }
+}
