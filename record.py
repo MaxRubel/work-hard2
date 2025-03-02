@@ -22,6 +22,7 @@ class InputTracker:
         self.old_mouse_pos = {"x": 0, "y": 0}
         self.new_mouse_pos = {"x": 0, "y": 0}
         self.buffer = ""  # Buffer to store typed characters
+        self.mult_keys = set()
         
         # Drag mouse
         self.is_dragging = False
@@ -51,7 +52,10 @@ class InputTracker:
         logger.info("Start Input Tracker")
         
         # Set up event listeners
-        self.keyboard_listener = keyboard.Listener(on_press=self.on_key_press)
+        self.keyboard_listener = keyboard.Listener(
+            on_press=self.on_key_press,
+            on_release=self.on_key_release
+            )
         self.mouse_listener = mouse.Listener(
             on_move=self.on_mouse_move, 
             on_click=self.on_click,
@@ -97,11 +101,31 @@ class InputTracker:
                 "c": False, # click
                 "down": False, #click down
                 "up": False, # click release
+                "mults_keys": list(self.mult_keys)  # Convert set to list for JSON serialization
             }
+
+            self.mult_keys.add(char)
+
             self.event_counters["key_presses"] += 1
             
         return True
     
+    def on_key_release(self, key):
+        char = None
+        try:
+            char = key.char
+        except AttributeError:
+            char = str(key)
+            logger.debug(f"Special key release: {char}")
+        
+        with self.lock:
+            # Check if the character is in the set before trying to remove it
+            if char in self.mult_keys:
+                self.mult_keys.remove(char)
+            else:
+                logger.debug(f"Attempted to remove key {char} that was not in mult_keys set")
+        return True
+        
     def on_mouse_move(self, x, y):
         self.new_mouse_pos = {"x": x, "y": y}
         
@@ -136,7 +160,8 @@ class InputTracker:
                         "down": False,
                         "during_drag": True,
                         "drag_distance_so_far": current_distance,
-                        "drag_duration_so_far": self.current_drag_data["duration"]
+                        "drag_duration_so_far": self.current_drag_data["duration"],
+                        "mults_keys": list(self.mult_keys)  # Add the active keys
                     }
         
         # Only log regular movements occasionally to avoid flooding the terminal
@@ -149,6 +174,9 @@ class InputTracker:
             
             if pressed:  # Mouse button down
                 logger.info(f"Mouse press with {button} at ({x}, {y})")
+                if self.mult_keys:
+                    logger.info(f"  with active keys: {self.mult_keys}")
+                
                 self.event_counters["mouse_clicks"] += 1
                 
                 # Start potential drag operation
@@ -176,10 +204,15 @@ class InputTracker:
                     "c": True,
                     "down": True,  # Mouse button pressed down
                     "up": False,
-                    "drag_start": True
+                    "drag_start": True,
+                    "mults_keys": list(self.mult_keys),  # Add active keys
+                    "button": str(button)  # Add which button was pressed
                 }
             else:  # Mouse button up
                 logger.info(f"Mouse release with {button} at ({x}, {y})")
+                if self.mult_keys:
+                    logger.info(f"  with active keys: {self.mult_keys}")
+                    
                 self.event_counters["mouse_releases"] += 1
                 
                 # Check if we were dragging
@@ -213,7 +246,9 @@ class InputTracker:
                         "drag_distance": drag_distance,
                         "drag_duration": drag_duration,
                         "drag_start_x": self.drag_start_pos["x"],
-                        "drag_start_y": self.drag_start_pos["y"]
+                        "drag_start_y": self.drag_start_pos["y"],
+                        "mults_keys": list(self.mult_keys),  # Add active keys
+                        "button": str(button)  # Add which button was released
                     }
                     
                     # Reset drag state
@@ -226,7 +261,9 @@ class InputTracker:
                         "k": False,
                         "c": True,
                         "down": False,
-                        "up": True
+                        "up": True,
+                        "mults_keys": list(self.mult_keys),  # Add active keys
+                        "button": str(button)  # Add which button was released
                     }
                 
         return True
@@ -234,6 +271,9 @@ class InputTracker:
     def on_scroll(self, x, y, dx, dy):
         """Handle mouse scroll events"""
         logger.debug(f"Mouse scroll at ({x}, {y}), direction: {'up' if dy > 0 else 'down'}")
+        if self.mult_keys:
+            logger.debug(f"  with active keys: {self.mult_keys}")
+            
         self.event_counters["scrolls"] += 1
         
         with self.lock:
@@ -245,7 +285,8 @@ class InputTracker:
                 "c": False,
                 "up": False,
                 "down": False,
-                "scroll": dy  # Positive for up, negative for down
+                "scroll": dy,  # Positive for up, negative for down
+                "mults_keys": list(self.mult_keys)  # Add active keys
             }
     
     def check_mouse_position(self):
@@ -264,7 +305,8 @@ class InputTracker:
                         "k": False,
                         "c": False,
                         "up": False,
-                        "down": False
+                        "down": False,
+                        "mults_keys": list(self.mult_keys)  # Add active keys
                     }
                     position_updates += 1
                     self.event_counters["mouse_moves"] += 1
@@ -280,6 +322,7 @@ class InputTracker:
     
     def start(self):
         """Start tracking inputs"""
+        time.sleep(.6)
         logger.info("=== Input tracking started ===")
         logger.info("Type /// to stop and save data")
         
@@ -313,6 +356,10 @@ class InputTracker:
                 
                 # Show standard event counts
                 logger.info(f"Events: {self.event_counters}")
+                
+                # Show active keys
+                if self.mult_keys:
+                    logger.info(f"Currently active keys: {self.mult_keys}")
                 
                 # Show drag status if currently dragging
                 if self.is_dragging:
@@ -369,15 +416,7 @@ class InputTracker:
                 logger.info(f"- Average drag distance: {avg_drag_distance:.2f} pixels")
                 logger.info(f"- Average drag duration: {avg_drag_duration:.2f} seconds")
             
-            # Create a timestamp for unique filename
-            timestamp = time.strftime("%Y%m%d_%H%M%S")
-            filename = f"input_data_{timestamp}.json"
-            
             try:
-                with open(filename, 'w') as f:
-                    json.dump(self.data, f, indent=2)
-                logger.info(f"Data saved to {os.path.abspath(filename)}")
-                
                 # Also save to the default filename
                 with open(self.output_file, 'w') as f:
                     json.dump(self.data, f, indent=2)
