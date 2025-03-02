@@ -24,6 +24,7 @@ def main():
         document = ""
         
     keyCount = 0
+    scrollCount = 0
     mouse_down = False  # Track if mouse button is currently pressed down
     
     print(f"Found {len(data)} events to process")
@@ -67,7 +68,6 @@ def main():
                 print(f"Clicked at position ({task['x']}, {task['y']})")
             
         # Handle keyboard input
-# Handle keyboard input
         elif task.get("k") != False and task.get("k") is not None:
             try:
                 # Check if it's a special key representation
@@ -82,7 +82,18 @@ def main():
                 keyCount += 1
             except Exception as e:
                 print(f"Error typing key {task['k']}: {e}")
-                
+
+        elif task.get("scroll") is not None:
+            scroll_amount = task.get("scroll")
+            # PyAutoGUI scroll takes positive values for scrolling up (unlike some systems)
+            # Adjust the multiplier to control scroll speed/sensitivity
+            scroll_multiplier = 5
+            clicks = int(scroll_amount * scroll_multiplier)
+            
+            print(f"Scrolling {'up' if clicks > 0 else 'down'} by {abs(clicks)} clicks")
+            pyautogui.scroll(clicks)
+            scrollCount += 1
+
         # Add a small sleep between actions to avoid overwhelming the system
         time.sleep(0.01)
     
