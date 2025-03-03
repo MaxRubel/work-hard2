@@ -22,7 +22,7 @@ class InputTracker:
         self.lock = threading.Lock()
         self.old_mouse_pos = {"x": 0, "y": 0}
         self.new_mouse_pos = {"x": 0, "y": 0}
-        self.mult_keys = set()
+        self.mult_keys = set()  # Track modifier keys being held down
 
         self.exit_count = 0
         
@@ -71,66 +71,106 @@ class InputTracker:
     def get_time_interval(self):
         return str(int((time.time() - self.start_time) * 100))
 
-    
     def on_key_press(self, key):
-        char = None
         try:
-            char = key.char
-            # Exit out the program by typing: ///
-            if self.exit_count == 2:
-                print("Ending recording. Saving data...")
-                self.stop()
-                return False  # Stop listener
+            # Handle normal character keys
+            if hasattr(key, 'char'):
+                char = key.char
+                
+                # Exit out the program by typing: ///
+                if char == "/":
+                    self.exit_count += 1
+                    if self.exit_count == 3:
+                        print("Ending recording. Saving data...")
+                        self.stop()
+                        return False  # Stop listener
 
-            if char == "/":
-                self.exit_count += 1
-
-            with self.lock:
-                time_interval = self.get_time_interval()
-                self.data[time_interval] = {
-                    "type": "keypress",
-                    "k": char, # the key pressed
-                    "mults_keys": list(self.mult_keys)  # Convert set to list for JSON serialization
-                }
+                with self.lock:
+                    time_interval = self.get_time_interval()
+                    self.data[time_interval] = {
+                        "type": "keypress",
+                        "k": char,  # the key pressed
+                        "mults_keys": list(self.mult_keys)  # Convert set to list for JSON serialization
+                    }
+                    self.event_counters["key_presses"] += 1
+                
+                print(f"Key press: '{char}'")
             
-            print(f"Key press: '{char}'")    
-    
-        except AttributeError:
-            char = str(key)
-            key_name = char.replace("Key.", "") if char.startswith("Key.") else char
-            print(key_name)
-            if key_name in ["shift", "ctrl", "alt"]:
-                print("adding to mult keys")
-                self.mult_keys.add(key_name)
-
-        return True
+            # Handle special keys (modifiers)
+            else:
+                # Convert key to string and clean up the format
+                key_str = str(key)
+                key_name = key_str.replace("Key.", "") if key_str.startswith("Key.") else key_str
+                
+                # Track modifier keys
+                if key_name in ['shift', 'ctrl', 'alt', 'cmd']:
+                    self.mult_keys.add(key_name)
+                
+                with self.lock:
+                    time_interval = self.get_time_interval()
+                    self.data[time_interval] = {
+                        "type": "keypress",
+                        "k": key_name,  # the key pressed
+                        "mults_keys": list(self.mult_keys)  # Convert set to list for JSON serialization
+                    }
+                    self.event_counters["key_presses"] += 1
+                
+                print(f"Special key press: '{key_name}'")
+            
+        except Exception as e:
+            logger.error(f"Error in key press handler: {e}")
+        
+        return True  # Continue listening
     
     def on_key_release(self, key):
-        char = None
         try:
-            char = key.char
-        except AttributeError:
-            char = str(key)
-            logger.debug(f"Special key release: {char}")
-        
-        with self.lock:
-            # Check if the character is in the set before trying to remove it
-            if char in self.mult_keys:
-                self.mult_keys.remove(char)
+            # Handle normal character keys
+            if hasattr(key, 'char'):
+                char = key.char
+                
+                with self.lock:
+                    time_interval = self.get_time_interval()
+                    self.data[time_interval] = {
+                        "type": "keyrelease",
+                        "k": char  # the key released
+                    }
+                
+                print(f"Key release: '{char}'")
+            
+            # Handle special keys (modifiers)
             else:
-                logger.debug(f"Attempted to remove key {char} that was not in mult_keys set")
-        return True
+                # Convert key to string and clean up the format
+                key_str = str(key)
+                key_name = key_str.replace("Key.", "") if key_str.startswith("Key.") else key_str
+                
+                # Remove from active modifiers if it's a modifier key
+                if key_name in ['shift', 'ctrl', 'alt', 'cmd']:
+                    if key_name in self.mult_keys:
+                        self.mult_keys.remove(key_name)
+                
+                with self.lock:
+                    time_interval = self.get_time_interval()
+                    self.data[time_interval] = {
+                        "type": "keyrelease",
+                        "k": key_name  # the key released
+                    }
+                
+                print(f"Special key release: '{key_name}'")
+            
+        except Exception as e:
+            logger.error(f"Error in key release handler: {e}")
+        
+        return True  # Continue listening
         
     def on_mouse_move(self, x, y):
         self.new_mouse_pos = {"x": x, "y": y}
         
         # Check if we're currently dragging
         if self.is_dragging:
-            # Update current drag data
             self.current_drag_data["current_x"] = x
             self.current_drag_data["current_y"] = y
             
-            # Calculate current drag distance
+
             dx = x - self.drag_start_pos["x"]
             dy = y - self.drag_start_pos["y"]
             current_distance = (dx**2 + dy**2)**0.5
@@ -147,6 +187,7 @@ class InputTracker:
                 with self.lock:
                     time_interval = self.get_time_interval()
                     self.data[time_interval] = {
+                        "type": "mousedrag",
                         "x": x,
                         "y": y,
                         "k": False,
@@ -182,6 +223,7 @@ class InputTracker:
                 
                 # Reset current drag data
                 self.current_drag_data = {
+                    "type": "click",
                     "start_x": x,
                     "start_y": y,
                     "current_x": x,
@@ -193,6 +235,7 @@ class InputTracker:
                 logger.info(f"Potential drag started at ({x}, {y})")
                 
                 self.data[time_interval] = {
+                    "type": "click_modified",
                     "x": x,
                     "y": y,
                     "k": False,
@@ -231,6 +274,7 @@ class InputTracker:
                     
                     # Save drag data
                     self.data[time_interval] = {
+                        "type": "stop_drag",
                         "x": x,
                         "y": y,
                         "k": False,
@@ -251,6 +295,7 @@ class InputTracker:
                 else:
                     # Regular mouse release (not part of drag)
                     self.data[time_interval] = {
+                        "type": "click_release",
                         "x": x,
                         "y": y,
                         "k": False,
@@ -274,6 +319,7 @@ class InputTracker:
         with self.lock:
             time_interval = self.get_time_interval()
             self.data[time_interval] = {
+                "type": "scroll",
                 "x": x,
                 "y": y,
                 "k": False,
@@ -295,6 +341,7 @@ class InputTracker:
                 with self.lock:
                     time_interval = self.get_time_interval()
                     self.data[time_interval] = {
+                        "type": "mouse_move",
                         "x": self.new_mouse_pos["x"],
                         "y": self.new_mouse_pos["y"],
                         "k": False,
